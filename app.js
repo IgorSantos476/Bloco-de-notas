@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const session = require('express-session');
 const flash = require('connect-flash');
+const db = require('./config/db');
 
 // TEMPLATE ENGINE
 app.engine('handlebars', engine());
@@ -42,9 +43,17 @@ app.use('/admin', admin);
 
 	//MONGOOSE
 mongoose.promise = global.Promise
-mongoose.connect("mongodb://localhost/blocoNotas").then(() => {
+// mongoose.connect("mongodb://localhost/blocoNotas").then(() => {
+// 	console.log('mongo conectado');
+// }).catch(e => console.log('Ocorreu um erro na conexão' + e));
+mongoose.connect(db.mongoURI).then(() => {
 	console.log('mongo conectado');
 }).catch(e => console.log('Ocorreu um erro na conexão' + e));
 
 
-app.listen(8080, () => console.log('Server Started!'));
+	// --> PORTA DA FORMA NORMAl ABAIXO -->
+//app.listen(8080, () => console.log('Server Started!'));
+
+	// --> PORTA PARA ACESSAR O HEROKU <--
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => console.log('Server Started!'));
