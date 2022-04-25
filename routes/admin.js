@@ -81,8 +81,4 @@ router.post('/anotacoes/deletar', (req, res) => {
 	});
 });
 
-router.get('/', (req, res) => {
-	res.render('front/menu');
-})
-
 module.exports = router;
