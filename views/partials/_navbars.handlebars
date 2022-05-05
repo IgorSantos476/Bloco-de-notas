@@ -57,11 +57,11 @@
         nav ul li {
             display: inline-block;
             line-height: 80px;
-            margin: 0 5px;
+            margin: 0 8px;
         }
 
         nav ul li a {
-          font-size: 17px;
+          font-size: 15px;
           text-transform: uppercase;
           text-decoration: none;
           color: black;
@@ -69,6 +69,9 @@
 
         li a:hover {
           color: grey;
+          background-color: #DCDCDC;
+          border-radius: 8px;
+          padding: 4px;
           transition: .4s
         }
 
@@ -147,8 +150,14 @@
     </label>
 
     <ul>
-        <li><a href="/admin/anotacoes/home">Anotações</a></li>
-        <li><a href="/admin/anotacoes/salvar">Nova</a></li>
+        {{#if user}}
+            <li><a href="/admin/anotacoes/home">Anotações</a></li>
+            <li><a href="/admin/anotacoes/salvar">Nova</a></li>
+            <li><a href="/usuarios/logout">Sair</a></li>
+            {{else}}
+            <li><a class="mr-3" href="/usuarios/login">Entrar</a></li>
+            <li><a href="/usuarios/registro">Cadastrar-se</a></li>
+        {{/if}}
     </ul>
   </nav>
 

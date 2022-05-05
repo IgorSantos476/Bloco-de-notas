@@ -3,8 +3,9 @@ const router = express.Router();
 const mongoose = require('mongoose');
 require('../models/anotacoes');
 const Anotaçoes = mongoose.model('anotaçoes');
+const {isAdmin} = require('../helpers/isAdmin');
 
-router.get('/anotacoes/home', (req, res) => {
+router.get('/anotacoes/home', isAdmin, (req, res) => {
 	Anotaçoes.find().lean().sort({data: 'DESC'}).then(anotaçoes => {
 		res.render('front/home', {anotaçoes, anotaçoes});
 	}).catch(e => {
@@ -13,11 +14,11 @@ router.get('/anotacoes/home', (req, res) => {
 	});
 });
 
-router.get('/anotacoes/salvar', (req, res) => {
+router.get('/anotacoes/salvar', isAdmin, (req, res) => {
 	res.render('front/salvar');
 });
 
-router.post('/anotacoes/salvar/nova', (req, res) => {
+router.post('/anotacoes/salvar/nova', isAdmin, (req, res) => {
 	let titulo = req.body.titulo;
 	let conteudo = req.body.conteudo;
 	let err = Array();
@@ -47,7 +48,7 @@ router.post('/anotacoes/salvar/nova', (req, res) => {
 });
 
 
-router.get('/anotacoes/edit/:id', (req, res) => {
+router.get('/anotacoes/edit/:id', isAdmin, (req, res) => {
 	Anotaçoes.findOne({_id: req.params.id}).lean().then(anotaçao => {
 		res.render('front/edit', {anotaçao, anotaçao});
 	}).catch(e => {
@@ -56,7 +57,7 @@ router.get('/anotacoes/edit/:id', (req, res) => {
 	});
 });
 
-router.post('/anotacoes/edit', (req, res) => {
+router.post('/anotacoes/edit', isAdmin, (req, res) => {
 	Anotaçoes.findOne({_id: req.body.id}).then(anotaçao => {
 		anotaçao.titulo = req.body.titulo;
 		anotaçao.conteudo = req.body.conteudo;
@@ -71,7 +72,7 @@ router.post('/anotacoes/edit', (req, res) => {
 	});
 });
 
-router.post('/anotacoes/deletar', (req, res) => {
+router.post('/anotacoes/deletar', isAdmin, (req, res) => {
 	Anotaçoes.deleteOne({_id: req.body.id}).then(() => {
 		req.flash('success_msg', 'Anotação deletada com sucesso!');
 		res.redirect('/admin/anotacoes/home');
